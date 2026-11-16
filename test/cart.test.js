@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { cartTotal, itemCount } from '../src/cart.js';
+import { cartTotal, cartTotalWithCode, itemCount } from '../src/cart.js';
 
 const coffee = { name: 'Coffee', priceCents: 350, quantity: 2 };
 const bagel = { name: 'Bagel', priceCents: 225, quantity: 1 };
@@ -24,4 +24,27 @@ test('rejects discounts outside 0 to 100', () => {
 
 test('counts items across lines', () => {
   assert.equal(itemCount([coffee, bagel]), 3);
+});
+
+test('WELCOME10 takes 10% off', () => {
+  assert.equal(cartTotalWithCode([coffee, bagel], 'WELCOME10'), cartTotal([coffee, bagel], 10));
+  assert.equal(cartTotalWithCode([coffee], 'WELCOME10'), 6.3);
+});
+
+test('SPRING25 takes 25% off', () => {
+  assert.equal(cartTotalWithCode([coffee], 'SPRING25'), 5.25);
+});
+
+test('discount codes are case-insensitive', () => {
+  assert.equal(cartTotalWithCode([coffee], 'welcome10'), 6.3);
+  assert.equal(cartTotalWithCode([coffee], 'Spring25'), 5.25);
+});
+
+test('rejects unknown discount codes with a RangeError', () => {
+  assert.throws(() => cartTotalWithCode([coffee], 'BOGUS'), {
+    name: 'RangeError',
+    message: 'Unknown discount code: BOGUS',
+  });
+  assert.throws(() => cartTotalWithCode([coffee], ''), RangeError);
+  assert.throws(() => cartTotalWithCode([coffee], undefined), RangeError);
 });

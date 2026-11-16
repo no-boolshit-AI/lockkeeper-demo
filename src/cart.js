@@ -23,6 +23,26 @@ export function cartTotal(items, discountPercent = 0) {
   return totalCents / 100;
 }
 
+/** Discount codes and their percentage off. Codes are matched case-insensitively. */
+const DISCOUNT_CODES = new Map([
+  ['WELCOME10', 10],
+  ['SPRING25', 25],
+]);
+
+/**
+ * The cart total after applying one discount code, in euros.
+ * @param {CartItem[]} items
+ * @param {string} code
+ * @returns {number}
+ */
+export function cartTotalWithCode(items, code) {
+  const percent = typeof code === 'string' ? DISCOUNT_CODES.get(code.toUpperCase()) : undefined;
+  if (percent === undefined) {
+    throw new RangeError(`Unknown discount code: ${String(code)}`);
+  }
+  return cartTotal(items, percent);
+}
+
 /**
  * How many items are in the cart.
  * @param {CartItem[]} items
