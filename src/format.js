@@ -4,5 +4,7 @@
  * @returns {string}
  */
 export function formatPrice(amount) {
-  return `€${amount.toFixed(2)}`;
+  const digits = Math.abs(amount).toFixed(2);
+  const sign = amount < 0 && digits !== '0.00' ? '-' : '';
+  return `${sign}€${digits}`;
 }
