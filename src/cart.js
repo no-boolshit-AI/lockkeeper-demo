@@ -3,6 +3,8 @@
  * public functions return euros.
  */
 
+import { formatPrice } from './format.js';
+
 /** @typedef {{ name: string, priceCents: number, quantity: number }} CartItem */
 
 /**
@@ -30,4 +32,17 @@ export function cartTotal(items, discountPercent = 0) {
  */
 export function itemCount(items) {
   return items.reduce((count, item) => count + item.quantity, 0);
+}
+
+/**
+ * A one-line cart summary for the header, such as "3 items · €12.50".
+ * Counts units across lines, as itemCount does.
+ * @param {CartItem[]} items
+ * @param {number} [discountPercent]
+ * @returns {string}
+ */
+export function cartSummary(items, discountPercent = 0) {
+  const count = itemCount(items);
+  const label = count === 1 ? '1 item' : `${count} items`;
+  return `${label} · ${formatPrice(cartTotal(items, discountPercent))}`;
 }
