@@ -15,11 +15,13 @@ export function cartTotal(items, discountPercent = 0) {
   if (discountPercent < 0 || discountPercent > 100) {
     throw new RangeError('discountPercent must be between 0 and 100');
   }
-  let totalCents = 0;
+  // Sum the exact discounted amounts in hundredths of a cent (integer for
+  // whole-number discounts), then round half up once at cart level.
+  let exactHundredthsOfCents = 0;
   for (const item of items) {
-    const lineCents = item.priceCents * item.quantity * (1 - discountPercent / 100);
-    totalCents += Math.floor(lineCents);
+    exactHundredthsOfCents += item.priceCents * item.quantity * (100 - discountPercent);
   }
+  const totalCents = Math.floor((exactHundredthsOfCents + 50) / 100);
   return totalCents / 100;
 }
 

@@ -25,3 +25,9 @@ test('rejects discounts outside 0 to 100', () => {
 test('counts items across lines', () => {
   assert.equal(itemCount([coffee, bagel]), 3);
 });
+
+test('rounds a discounted total half up once at cart level', () => {
+  const lineA = { name: 'Mint', priceCents: 95, quantity: 1 };
+  const lineB = { name: 'Gum', priceCents: 95, quantity: 1 };
+  assert.equal(cartTotal([lineA, lineB], 10), 1.71);
+});
