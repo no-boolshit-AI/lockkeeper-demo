@@ -1,0 +1,15 @@
+{
+  "name": "lockkeeper-demo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A tiny shop library for trying Lockkeeper end to end.",
+  "type": "module",
+  "scripts": {
+    "lint": "for file in src/*.js test/*.js; do node --check \"$file\" || exit 1; done",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "license": "Apache-2.0"
+}
