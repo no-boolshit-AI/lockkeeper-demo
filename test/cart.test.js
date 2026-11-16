@@ -41,3 +41,7 @@ test('summarises a cart with several items', () => {
 test('summary applies the discount', () => {
   assert.equal(cartSummary([coffee], 10), '2 items · €6.30');
 });
+
+test('summarises a cart of several lines with a 10% discount', () => {
+  assert.equal(cartSummary([coffee, bagel], 10), '3 items · €8.32');
+});
