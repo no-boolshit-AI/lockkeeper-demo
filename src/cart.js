@@ -34,6 +34,11 @@ const DISCOUNT_CODES = new Map([
  * @param {CartItem[]} items
  * @param {string} code
  * @returns {number}
+ * @throws {RangeError} If the code is not a known discount code.
+ * @example
+ * // Two coffees at €3.50 each, with 10% off from WELCOME10.
+ * cartTotalWithCode([{ name: 'Coffee', priceCents: 350, quantity: 2 }], 'WELCOME10');
+ * // => 6.3
  */
 export function cartTotalWithCode(items, code) {
   const percent = typeof code === 'string' ? DISCOUNT_CODES.get(code.toUpperCase()) : undefined;
